@@ -6,6 +6,7 @@ from PyQt5.QtWidgets import QApplication, QLabel, QMainWindow
 import requests
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
+from PyQt5.QtCore import Qt
 
 class MainWindow(QMainWindow):
     g_map: QLabel
@@ -17,7 +18,6 @@ class MainWindow(QMainWindow):
         self.map_ll = [45, 45]
         self.map_l = 'map'
         self.map_key = ''
-
         self.refresh_map()
 
     def refresh_map(self):
@@ -39,6 +39,17 @@ class MainWindow(QMainWindow):
         pixmap = QPixmap()
         pixmap.load('tmp.png')
         self.g_map.setPixmap(pixmap)
+
+    def keyPressEvent(self, event):
+        if event.key == Qt.Key_PageUp:
+            self.map_zoom += 1
+        elif event.key == Qt.Key_PageDown:
+            self.map_zoom -= 1
+        if self.map_zoom < 1:
+            self.map_zoom = 1
+        elif self.map_zoom > 10:
+            self.map_zoom = 10
+        self.refresh_map()
 
 
 app = QApplication(sys.argv)
