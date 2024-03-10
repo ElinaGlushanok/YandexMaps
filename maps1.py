@@ -15,7 +15,7 @@ class MainWindow(QMainWindow):
         super().__init__(*args, **kwargs)
         uic.loadUi('map1.ui', self)
         self.map_zoom = 5
-        self.map_ll = [45, 45]
+        self.map_ll = [0, 0]
         self.map_l = 'map'
         self.map_key = ''
         self.refresh_map()
@@ -41,14 +41,18 @@ class MainWindow(QMainWindow):
         self.g_map.setPixmap(pixmap)
 
     def keyPressEvent(self, event):
-        if event.key() == Qt.Key_PageUp:
+        if event.key() == Qt.Key_PageUp and self.map_zoom < 10:
             self.map_zoom += 1
-        elif event.key() == Qt.Key_PageDown:
+        elif event.key() == Qt.Key_PageDown and self.map_zoom > 1:
             self.map_zoom -= 1
-        if self.map_zoom < 1:
-            self.map_zoom = 1
-        elif self.map_zoom > 10:
-            self.map_zoom = 10
+        elif event.key() == Qt.Key_Up and self.map_ll[1] < 80:
+            self.map_ll[1] += 1
+        elif event.key() == Qt.Key_Down and self.map_ll[1] > -80:
+            self.map_ll[1] -= 1
+        elif event.key() == Qt.Key_Left and self.map_ll[0] > -180:
+            self.map_ll[0] -= 1
+        elif event.key() == Qt.Key_Right and self.map_ll[0] < 180:
+            self.map_ll[0] += 1
         self.refresh_map()
 
 
