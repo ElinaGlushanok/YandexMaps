@@ -41,9 +41,9 @@ class MainWindow(QMainWindow):
         self.g_map.setPixmap(pixmap)
 
     def keyPressEvent(self, event):
-        if event.key == Qt.Key_PageUp:
+        if event.key() == Qt.Key_PageUp:
             self.map_zoom += 1
-        elif event.key == Qt.Key_PageDown:
+        elif event.key() == Qt.Key_PageDown:
             self.map_zoom -= 1
         if self.map_zoom < 1:
             self.map_zoom = 1
@@ -53,6 +53,6 @@ class MainWindow(QMainWindow):
 
 
 app = QApplication(sys.argv)
-map = MainWindow()
-map.show()
+Map = MainWindow()
+Map.show()
 sys.exit(app.exec())
